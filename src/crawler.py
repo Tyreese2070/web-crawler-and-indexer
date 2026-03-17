@@ -6,9 +6,9 @@ def get_page_content(url):
     Get the HTML content of a page from the URL
     """
 
-    response = requests.get(url)
-
     try:
+        response = requests.get(url)
+        
         if response.status_code == 200:
             return response.text
         else:
@@ -19,4 +19,5 @@ def get_page_content(url):
         print(f"An error occurred: {e}")
         return None
 
-print(get_page_content("https://quotes.toscrape.com/"))
+if __name__ == "__main__":
+    print(get_page_content("https://quotes.toscrape.com/"))

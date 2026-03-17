@@ -14,3 +14,9 @@ pip install -r requirements.txt
 # Usage
 
 # Testing
+
+Ensure you are in the root directory for the repository and the virtual environment is activated with pytest installed.
+
+```bash
+python -m pytest
+```
