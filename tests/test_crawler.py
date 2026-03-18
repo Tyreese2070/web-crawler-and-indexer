@@ -1,6 +1,8 @@
 import pytest
 from unittest.mock import patch, Mock
-from src.crawler import get_page_content
+from src.crawler import get_page_content, crawl
+
+# ========= get_page_content tests ===========
 
 @patch("src.crawler.requests.get")
 def test_get_page_content_success(mock_get):
@@ -40,3 +42,40 @@ def test_get_page_content_exception(mock_get):
     result = get_page_content("https://test.com")
 
     assert result is None
+
+# ========= crawl tests ===========
+@patch("src.crawler.time.sleep")
+@patch("src.crawler.get_page_content")
+def test_crawl(mock_get_page_content, mock_sleep):
+    """
+    Test that the crawl function works correctly with a simple page structure
+    """
+
+    # Page with next button
+    page_1 = """
+    <html>
+        <body>
+            <h1>Page 1</h1>
+            <li class="next"><a href="/page/2">Next</a></li>
+        </body>
+    </html>
+    """
+
+    # Page without next button
+    page_2 = """
+    <html>
+        <body>
+            <h1>Page 2</h1>
+        </body>
+    </html>
+    """
+
+    mock_get_page_content.side_effect = [page_1, page_2]
+    result = crawl("https://test.com")
+
+    assert len(result) == 2
+    assert result[0]["url"] == "https://test.com"
+    assert result[0]["text"] == "Page 1 Next"
+    assert result[1]["url"] == "https://test.com/page/2"
+    assert result[1]["text"] == "Page 2"
+    mock_sleep.assert_called_with(6)
