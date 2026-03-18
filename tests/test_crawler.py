@@ -111,3 +111,26 @@ def test_crawl_infinite_loop(mock_get_page_content, mock_sleep):
     assert result[0]["url"] == "https://test.com/page/1"
     assert result[1]["url"] == "https://test.com/page/2"
 
+@patch("src.crawler.time.sleep")
+@patch("src.crawler.get_page_content")
+def test_crawl_page_fail(mock_get_page_content, mock_sleep):
+    """
+    Test that the crawl function works correctly when a page fails to load
+    """
+
+    page_1 = """
+    <html>
+        <body>
+            <h1>Page 1</h1>
+            <li class="next"><a href="/page/2">Next</a></li>
+        </body>
+    </html>
+    """
+
+    # page 1 fails but page 2 gives 404
+    mock_get_page_content.side_effect = [page_1, None]
+    result = crawl("https://test.com/page/1")
+
+    assert len(result) == 1
+    assert result[0]["url"] == "https://test.com/page/1"
+
