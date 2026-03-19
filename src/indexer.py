@@ -2,7 +2,7 @@ import json
 import string
 import os
 
-from crawler import crawl
+from src.crawler import crawl
 
 class Indexer:
     def __init__(self):
