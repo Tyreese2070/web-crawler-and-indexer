@@ -9,10 +9,16 @@ def print_word(indexer, word):
         return
     
     word = tokens[0]
+    
     if word in indexer.index:
-        print(indexer.index[word])
+        print(f"Index for '{word}':")
+        for url, data in indexer.index[word].items():
+            print(f"    {url}")
+            print(f"    Frequency: {data['frequency']}")
+            print(f"    Positions: {data['positions']}")
+            print(" ")
     else:
-        print(f"{word} not found in index")
+        print(f"'{word}' not found in index")
 
 def find_query(indexer, query):
     tokens = indexer.tokenise(query)
