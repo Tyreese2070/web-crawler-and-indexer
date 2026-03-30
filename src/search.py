@@ -1,7 +1,14 @@
 import sys
 from src.indexer import Indexer
 
-def print_word(indexer, word):
+def print_word(indexer: Indexer, word: str) -> None:
+    """
+    Normalises a word, looks it up in the index, and prints its statistics.
+    
+    Args: 
+        indexer (Indexer): Loaded Indexer containing the web data
+        word (str): The word to look up in the index
+    """
     tokens = indexer.tokenise(word)
 
     if not tokens:
@@ -20,7 +27,16 @@ def print_word(indexer, word):
     else:
         print(f"'{word}' not found in index")
 
-def find_query(indexer, query):
+def find_query(indexer: Indexer, query: str) -> None:
+    """
+    Normalises a query, looks up each word in the index, and prints URLs
+    that contain all the words in the query.
+
+    Args: 
+        indexer (Indexer): Loaded Indexer containing the web data
+        query (str): The query to search for
+    """
+
     tokens = indexer.tokenise(query)
 
     if not tokens:

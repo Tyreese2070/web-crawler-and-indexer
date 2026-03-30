@@ -3,9 +3,15 @@ import requests
 from collections import deque
 import time
 
-def get_page_content(url):
+def get_page_content(url: str) -> str:
     """
     Get the HTML content of a page from the URL
+
+    Args:
+        url (str): The URL of the page to fetch
+
+    Returns:
+        str: The HTML content of the page or None if there was an error
     """
 
     try:
@@ -21,9 +27,15 @@ def get_page_content(url):
         print(f"An error occurred: {e}")
         return None
     
-def crawl(url):
+def crawl(url: str) -> list[dict]:
     """
-    Crawl a page from the URL, get text and links, respect the 6 second delay
+    Crawls the website from the given url, extracts text and follows links.
+    Respects 6 second politeness window between requests.
+
+    Args:
+        url (str): The URL to start crawling from
+
+    Returns: list[dict]: A list of dictionaries containing the URL and extracted text
     """
 
     visited_urls = set()

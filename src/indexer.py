@@ -5,23 +5,36 @@ import os
 from src.crawler import crawl
 
 class Indexer:
-    def __init__(self):
+    """
+    Class to build, save, and load an inverted index from crawled pages.
+    """
+    def __init__(self) -> None:
+        """
+        Initialises the index dictionary and sets a default file path.
+        """
         self.index = {}
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self.filepath = os.path.abspath(os.path.join(current_dir, "..", "data", "index.json"))
 
-    def tokenise(self, text):
+    def tokenise(self, text: str) -> list[str]:
         """
         Convert text to lowercase, remove punctuation, and split into tokens
+
+        Args: text (str): Text extracted from a page
+
+        Returns: list[str]: A list of cleaned tokens
         """
         text = text.lower()
         text = text.translate(str.maketrans("", "", string.punctuation))
         tokens = text.split()
         return tokens
 
-    def build(self, pages):
+    def build(self, pages: list[dict]) -> None:
         """
-        Build inverted index from parsed pages 
+        Build inverted index from parsed pages.
+        Maps each word to the URLs it appears in, tracking frequency and positions.
+
+        Args: pages (list[dict]): A list of dictionaries containing URLs and their extracted text 
         """
         for page in pages:
             url = page["url"]
@@ -39,13 +52,14 @@ class Indexer:
                 self.index[word][url]["positions"].append(position)
     
     def save(self):
+        """Saves the index to the file system as a JSON file"""
         os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
 
         with open(self.filepath, "w", encoding="utf-8") as f:
             json.dump(self.index, f, ensure_ascii=False, indent=4)
 
     def load(self):
-        """Load index from JSON file"""
+        """Load index frrom the JSON file into memory"""
         try:
             with open(self.filepath, "r", encoding="utf-8") as f:
                 self.index = json.load(f)

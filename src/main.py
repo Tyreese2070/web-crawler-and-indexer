@@ -2,7 +2,12 @@ from src.indexer import Indexer
 from src.crawler import crawl
 from src.search import print_word, find_query
 
-def main():
+def main() -> None:
+    """
+    Starts the CLI for the web crawler and indexer. Parses user input
+    and maps it to the appropriate functions for building, loading, and searching the index.
+    """
+
     print("Commands: build, load, print <word>, find <query>, exit")
 
     search_engine = Indexer()
