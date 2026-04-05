@@ -1,5 +1,6 @@
 import sys
 from src.indexer import Indexer
+import math
 
 def print_word(indexer: Indexer, word: str) -> None:
     """
@@ -30,7 +31,7 @@ def print_word(indexer: Indexer, word: str) -> None:
 def find_query(indexer: Indexer, query: str) -> None:
     """
     Normalises a query, looks up each word in the index, and prints URLs
-    that contain all the words in the query.
+    that contain all the words in the query, ranked by their TF-IDF scores.
 
     Args: 
         indexer (Indexer): Loaded Indexer containing the web data
@@ -43,20 +44,36 @@ def find_query(indexer: Indexer, query: str) -> None:
         print("Invalid query")
         return
     
-    if tokens[0] not in indexer.index:
+    for token in tokens:
+        if token not in indexer.index:
+            print("No pages found")
+            return
+    
+    matching_urls = set(indexer.index[tokens[0]].keys())
+    for token in tokens[1:]:
+        matching_urls.intersection_update(set(indexer.index[token].keys()))
+    
+    if not matching_urls:
         print("No pages found")
         return
     
-    matching_urls = set(indexer.index[tokens[0]].keys())
+    url_set = set()
+    for word in indexer.index.values():
+        url_set.update(word.keys())
+    total_pages = len(url_set)
 
-    for token in tokens[1:]:
-        if token not in indexer.index:
-            matching_urls = set()
-            break
-        matching_urls.intersection_update(set(indexer.index[token].keys()))
+    ranked_results = {}
+    for url in matching_urls:
+        score = 0.0
+        for token in tokens:
+            tf = indexer.index[token][url]["frequency"]
+            df = len(indexer.index[token])
+            idf = math.log(total_pages / df) + 1
+            score += tf * idf
 
-    if not matching_urls:
-        print("No pages found")
-    else:
-        for url in matching_urls:
-            print(url)
+        ranked_results[url] = score
+    
+    sorted_results = sorted(ranked_results.items(), key=lambda x: x[1], reverse=True)
+    for rank, (url, score) in enumerate(sorted_results, start=1):
+        print(f"{rank}. {url} (TF-IDF Score: {score:.3f})")
+    print(" ")
