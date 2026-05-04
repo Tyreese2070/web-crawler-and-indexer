@@ -20,3 +20,12 @@ Ensure you are in the root directory for the repository and the virtual environm
 ```bash
 python -m pytest
 ```
+
+# TODO:
+Implement Tests for new features (TDF and main.py CLI??)
+
+Improve search - Add things like suggested search etc...
+
+Improve README.
+
+Improve code quality
