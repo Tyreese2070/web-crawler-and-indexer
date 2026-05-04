@@ -1,6 +1,7 @@
 import sys
 from src.indexer import Indexer
 import math
+import difflib
 
 def print_word(indexer: Indexer, word: str) -> None:
     """
@@ -47,12 +48,18 @@ def find_query(indexer: Indexer, query: str) -> None:
     for token in tokens:
         if token not in indexer.index:
             print("No pages found")
+            suggestion = difflib.get_close_matches(token, indexer.index.keys(), n=1, cutoff=0.6)
+            if suggestion:
+                print(f"Did you mean: {suggestion[0]}")
+            else:
+                print(f"{token} not found in index")
             return
     
     matching_urls = set(indexer.index[tokens[0]].keys())
     for token in tokens[1:]:
         matching_urls.intersection_update(set(indexer.index[token].keys()))
     
+    # Query suggestion if no pages found
     if not matching_urls:
         print("No pages found")
         return
