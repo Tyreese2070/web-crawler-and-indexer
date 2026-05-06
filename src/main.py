@@ -22,7 +22,7 @@ def main() -> None:
         if not user_input:
             continue
 
-        if user_input.lower() in ["exit", "quit"]:
+        if user_input.lower() in ["exit"]:
             print("Exiting")
             break
 
@@ -49,14 +49,14 @@ def main() -> None:
             if search_engine.index:
                 print("Index loaded")
             else:
-                print("Failed to load index, run build first")
+                print("Failed to load index, run build or load first")
 
         # Print command
         elif command == "print":
             if len(command_parts) < 2:
                 print("Usage: print <word>")
             elif not search_engine.index:
-                print("Index not loaded, run build or load first")
+                print("Failed to load index, run build or load first")
             else:
                 print_word(search_engine, command_parts[1])
         
@@ -65,7 +65,7 @@ def main() -> None:
             if len(command_parts) < 2:
                 print("Usage: find <query>")
             elif not search_engine.index:
-                print("Index not loaded, run build or load first")
+                print("Failed to load index, run build or load first")
             else:
                 find_query(search_engine, command_parts[1])
         
