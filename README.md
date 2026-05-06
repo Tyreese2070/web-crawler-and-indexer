@@ -32,6 +32,8 @@ python -m src.main
 ```
 
 ## Example CLI Session:
+
+```text
 Commands: build, load, print <word>, find <query>, exit
 
 > build
@@ -65,7 +67,7 @@ Did you mean: world
 5. https://quotes.toscrape.com/page/2/ (TF-IDF Score: 1.693)
 
 >
-
+```
 # Testing
 
 Ensure you are in the root directory for the repository and the virtual environment is activated with pytest installed.
