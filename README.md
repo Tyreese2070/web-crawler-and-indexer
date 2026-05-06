@@ -1,7 +1,6 @@
 # web-crawler-and-indexer
 ![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+[![Build Status](https://github.com/tyreese2070/web-crawler-and-indexer/actions/workflows/tests.yml/badge.svg)](https://github.com/tyreese2070/web-crawler-and-indexer/actions/workflows/tests.yml)
 
 # Overview
 A command line web crawler, indexer, and search engine. The tool recursively crawls the given website with a 6 second politeness window, and parses the HTML content to build an inverted index. 
