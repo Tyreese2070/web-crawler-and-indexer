@@ -14,6 +14,7 @@ def get_page_content(url: str) -> str:
         str: The HTML content of the page or None if there was an error
     """
 
+    # Try to fetch the page content and handle errors
     try:
         response = requests.get(url)
 
@@ -38,10 +39,12 @@ def crawl(url: str) -> list[dict]:
     Returns: list[dict]: A list of dictionaries containing the URL and extracted text
     """
 
+    # Use a set to track visited URLs and deque for URLs to visit
     visited_urls = set()
     to_visit = deque([url])
     data = []
 
+    # Crawl until there are no more URLs to visit
     while to_visit:
         current_url = to_visit.popleft()
 
@@ -50,6 +53,7 @@ def crawl(url: str) -> list[dict]:
 
         content = get_page_content(current_url)
 
+        # Get the text content and find the next link to follow
         if content is not None:
             soup = BeautifulSoup(content, "html.parser")
             text = soup.get_text(separator=" ", strip=True)
@@ -63,7 +67,7 @@ def crawl(url: str) -> list[dict]:
                     to_visit.append(absolute_link)
 
         visited_urls.add(current_url)
-        time.sleep(6)
+        time.sleep(6) # 6 second politeness window
 
     return data
 

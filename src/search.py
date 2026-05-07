@@ -11,7 +11,7 @@ def print_word(indexer: Indexer, word: str) -> None:
         indexer (Indexer): Loaded Indexer containing the web data
         word (str): The word to look up in the index
     """
-    tokens = indexer.tokenise(word)
+    tokens = indexer.tokenise(word) # normalise the word
 
     if not tokens:
         print("Invalid word")
@@ -19,6 +19,7 @@ def print_word(indexer: Indexer, word: str) -> None:
     
     word = tokens[0]
     
+    # Look up the word in the index and print the stats
     if word in indexer.index:
         print(f"Index for '{word}':")
         for url, data in indexer.index[word].items():

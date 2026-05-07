@@ -12,6 +12,8 @@ class Indexer:
         """
         Initialises the index dictionary and sets a default file path.
         """
+        
+        # Dictionary to hold the inverted index to hold URLS, frequencies, and positions of words
         self.index = {}
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self.filepath = os.path.abspath(os.path.join(current_dir, "..", "data", "index.json"))
@@ -24,6 +26,8 @@ class Indexer:
 
         Returns: list[str]: A list of cleaned tokens
         """
+
+        # Remove punctuation and convert to lowercase
         text = text.lower()
         text = text.translate(str.maketrans("", "", string.punctuation))
         tokens = text.split()
@@ -36,6 +40,8 @@ class Indexer:
 
         Args: pages (list[dict]): A list of dictionaries containing URLs and their extracted text 
         """
+
+        # Iterate through each page and update the index
         for page in pages:
             url = page["url"]
             text = page["text"]
@@ -48,6 +54,7 @@ class Indexer:
                 if url not in self.index[word]:
                     self.index[word][url] = {"frequency": 0, "positions": []}
                 
+                # Update frequency and positions
                 self.index[word][url]["frequency"] += 1
                 self.index[word][url]["positions"].append(position)
     
