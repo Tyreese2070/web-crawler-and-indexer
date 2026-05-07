@@ -8,7 +8,7 @@ def main() -> None:
     and maps it to the appropriate functions for building, loading, and searching the index.
     """
 
-    print("Commands: build, load, print <word>, find <query>, exit")
+    print("Commands: build, load, print <word>, find <query>, help, exit")
 
     search_engine = Indexer()
 
@@ -68,7 +68,11 @@ def main() -> None:
                 print("Failed to load index, run build or load first")
             else:
                 find_query(search_engine, command_parts[1])
-        
+
+        # Help command
+        elif command == "help":
+            print("Commands: build, load, print <word>, find <query>, help, exit")
+
         else:
             print("Unknown command")
 
