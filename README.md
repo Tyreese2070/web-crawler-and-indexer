@@ -96,6 +96,7 @@ python -m pytest
 ```
 
 # Directory Structure
+```text
 ├───.github
 │   └───workflows           # Configuration for automated testing
 |
@@ -113,3 +114,4 @@ python -m pytest
 │   └───test_crawler.py
 │   └───test_indexer.py
 │   └───test_search.py
+```
