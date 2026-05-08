@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from collections import deque
 import time
-from urllib.parse import urljoin, urldefrag
+from urllib.parse import urljoin, urldefrag, urlparse
 
 def get_page_content(url: str) -> str:
     """
@@ -40,6 +40,8 @@ def crawl(url: str) -> list[dict]:
     Returns: list[dict]: A list of dictionaries containing the URL and extracted text
     """
 
+    start = urlparse(url).netloc
+
     # Use a set to track visited URLs and deque for URLs to visit
     visited_urls = set()
     to_visit = deque([url])
@@ -66,7 +68,7 @@ def crawl(url: str) -> list[dict]:
 
                 clean_url, _ = urldefrag(absolute_link)
                 
-                if "quotes.toscrape.com" in clean_url:
+                if urlparse(clean_url).netloc == start:
                     if clean_url not in visited_urls and clean_url not in to_visit:
                         to_visit.append(clean_url)
 
