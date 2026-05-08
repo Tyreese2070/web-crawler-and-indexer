@@ -35,7 +35,7 @@ python -m src.main
 
 ## Commands
 
-Build: Crawls https://quotes.toscrape.com/ with a 6 second politeness window and builds the index. This takes around two minutes.
+Build: Crawls https://quotes.toscrape.com/ with a 6 second politeness window and builds the index. This takes around 20 minutes.
 
 Load: Loads the index into memory. This requires the build command to be run if index.json isn't in /data.
 

@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from collections import deque
 import time
+from urllib.parse import urljoin, urldefrag
 
 def get_page_content(url: str) -> str:
     """
@@ -59,12 +60,15 @@ def crawl(url: str) -> list[dict]:
             text = soup.get_text(separator=" ", strip=True)
             data.append({"url": current_url, "text": text})
 
-            next_link = soup.select_one("li.next a")
-            if next_link and "href" in next_link.attrs:
-                absolute_link = requests.compat.urljoin(current_url, next_link["href"])
+            for link in soup.find_all("a", href=True):
+                href = link["href"]
+                absolute_link = requests.compat.urljoin(current_url, href)
+
+                clean_url, _ = urldefrag(absolute_link)
                 
-                if absolute_link not in visited_urls and absolute_link not in to_visit:
-                    to_visit.append(absolute_link)
+                if "quotes.toscrape.com" in clean_url:
+                    if clean_url not in visited_urls and clean_url not in to_visit:
+                        to_visit.append(clean_url)
 
         visited_urls.add(current_url)
         time.sleep(6) # 6 second politeness window
